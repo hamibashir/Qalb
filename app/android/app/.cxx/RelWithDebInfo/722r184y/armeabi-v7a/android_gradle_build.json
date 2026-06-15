@@ -1,0 +1,28 @@
+{
+  "buildFiles": [
+    "/Users/kayum/fvm/versions/3.29.0/packages/flutter_tools/gradle/src/main/groovy/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/Users/kayum/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+      "-C",
+      "/Users/kayum/T29/main/Zabi-Flutter-App/android/app/.cxx/RelWithDebInfo/722r184y/armeabi-v7a",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/Users/kayum/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+    "-C",
+    "/Users/kayum/T29/main/Zabi-Flutter-App/android/app/.cxx/RelWithDebInfo/722r184y/armeabi-v7a",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {},
+  "toolchains": {
+    "toolchain": {
+      "cCompilerExecutable": "/Users/kayum/Library/Android/sdk/ndk/26.3.11579264/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang.lld",
+      "cppCompilerExecutable": "/Users/kayum/Library/Android/sdk/ndk/26.3.11579264/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++.lld"
+    }
+  },
+  "cFileExtensions": [],
+  "cppFileExtensions": []
+}

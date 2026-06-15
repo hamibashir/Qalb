@@ -1,0 +1,31 @@
+# Node
+node_modules/
+npm-debug.log
+
+# Laravel
+web/vendor/
+web/.env
+web/.phpunit.result.cache
+web/storage/logs/
+web/storage/framework/
+web/storage/app/
+
+# Flutter
+app/.dart_tool/
+app/build/
+app/.flutter-plugins
+app/.flutter-plugins-dependencies
+app/.pub-cache/
+app/.pub/
+app/android/app/debug
+app/android/app/profile
+app/android/app/release
+app/ios/Flutter/.last_build_id
+app/app.*.symbols
+app/app.*.map.json
+
+# IDEs / OS
+.idea/
+.vscode/
+*.swp
+.DS_Store

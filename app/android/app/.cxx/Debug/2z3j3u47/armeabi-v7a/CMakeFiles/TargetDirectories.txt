@@ -1,0 +1,2 @@
+/Users/kayum/T29/main/Zabi-Flutter-App/android/app/.cxx/Debug/2z3j3u47/armeabi-v7a/CMakeFiles/edit_cache.dir
+/Users/kayum/T29/main/Zabi-Flutter-App/android/app/.cxx/Debug/2z3j3u47/armeabi-v7a/CMakeFiles/rebuild_cache.dir
