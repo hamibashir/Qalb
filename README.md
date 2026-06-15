@@ -12,20 +12,25 @@
 
 ## 📖 Overview
 
-Welcome to the **Qalb** repository! Qalb is a fully-featured Islamic mobile application accompanied by a robust web backend. It is designed to provide users with accurate prayer times, Qibla direction, Quran recitation, Hijri calendar, and more, seamlessly integrated across a modern tech stack.
+Welcome to the **Qalb** repository! Qalb is a comprehensive, fully-featured Islamic mobile application accompanied by a robust, highly-scalable web backend. Built to serve the spiritual needs of the global Muslim community, it offers a beautifully designed, all-in-one platform for daily religious practices. From precise prayer times and Qibla direction to an extensive library of Quranic audio, Hadiths, and daily supplications, Qalb is developed to deliver a seamless, intuitive, and deeply engaging user experience across both mobile and web.
 
 ---
 
 ## ✨ Key Features
 
-- **🕋 Accurate Prayer Times & Qibla**: Built-in compass and geolocation for precise timings and direction.
-- **📖 Quran & Audio**: High-quality audio playback and background services for recitation.
-- **📅 Hijri Calendar**: Integrated Islamic calendar dates and events.
-- **🔔 Prayer Notifications**: Reliable local notifications and timezone support for Adhan alerts.
-- **💳 Donation/Payments**: Secure payment integrations including Stripe, PayPal, Razorpay, and Paystack.
-- **🌍 Multi-language Support**: Easily switch between languages for a localized experience.
-- **📱 Cross-platform App**: A single codebase for Android and iOS built with Flutter.
-- **⚙️ Powerful Backend**: A scalable, API-driven backend powered by Laravel.
+- **📖 Audio Quran**: Complete Quran with high-quality audio recitation and background playback.
+- **📚 Hadith Collection**: A comprehensive library of authentic Hadiths.
+- **🤲 Duas & Supplications**: A vast collection of daily Duas for various occasions.
+- **📿 Zikr & Tasbeeh**: Digital counter for daily Zikr and spiritual remembrance.
+- **✨ 99 Names of Allah (Asma-ul-Husna)**: Beautifully presented names with meanings.
+- **🧭 Qibla Compass**: Highly accurate built-in compass to find the precise Qibla direction from anywhere.
+- **🕌 Nearby Mosque Finder**: Integrated geolocation to easily locate and navigate to the nearest mosques.
+- **🕋 Accurate Prayer Times**: Precise timings based on your location with reliable Adhan notifications.
+- **💰 Zakat & Donations**: Secure, integrated platform for calculating and making Zakat and charitable donations.
+- **📅 Hijri Calendar**: Integrated Islamic calendar dates, events, and moon sighting adjustments.
+- **🌍 Multi-language Support**: Easily switch between multiple languages for a fully localized experience.
+- **📱 Cross-platform App**: A single, beautifully crafted codebase for Android and iOS built with Flutter.
+- **⚙️ Powerful Backend**: A scalable, API-driven backend powered by Laravel for data management and services.
 
 ---
 
