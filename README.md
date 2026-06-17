@@ -45,7 +45,7 @@ Welcome to the **Qalb** repository! Qalb is a comprehensive, fully-featured Isla
 ### Backend (Laravel)
 - **Framework**: [Laravel](https://laravel.com/)
 - **Language**: [PHP](https://php.net/)
-- **Database**: MySQL / PostgreSQL
+- **Database**: MySQL
 - **Asset Bundler**: [Vite](https://vitejs.dev/)
 
 ---

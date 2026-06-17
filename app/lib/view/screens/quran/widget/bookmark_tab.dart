@@ -45,7 +45,6 @@ class BookmarkTab extends StatelessWidget {
               : ListView.builder(
                   padding: const EdgeInsets.symmetric(
                       horizontal: Dimensions.PADDING_SIZE_DEFAULT),
-                  shrinkWrap: true,
                   primary: false,
                   itemCount: bookMarkController.bookMarks.length,
                   itemBuilder: (context, index) {

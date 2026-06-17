@@ -47,7 +47,8 @@ class PrayerTimeController extends GetxController implements GetxService {
   double? longitude;
   String? saveLocalStoreCity;
 
-  Future<void> getLocation() async {
+  Future<void> getLocation({bool forceRefresh = false}) async {
+    if (!forceRefresh && currentAddress.value != '--') return;
     bool serviceEnabled = false;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     LocationPermission permission;
@@ -275,6 +276,7 @@ class PrayerTimeController extends GetxController implements GetxService {
       {bool reload = true,
       bool isManualPrayerTme = false,
       String? manualCity}) async {
+    if (prayerTimeModel != null && !reload) return;
     try {
       loadPrayerTimeSettings();
       reload ? isprayerTimeLoading(true) : isprayerTimeLoading(false);
@@ -397,11 +399,11 @@ class PrayerTimeController extends GetxController implements GetxService {
 
 // 12 or 24 hour format
 
-  RxBool is24HourFormat = true.obs;
+  RxBool is24HourFormat = false.obs;
 
   Future<void> loadSwitchValue() async {
     final prefs = await SharedPreferences.getInstance();
-    is24HourFormat.value = prefs.getBool('is24HrFormat') ?? true;
+    is24HourFormat.value = prefs.getBool('is24HrFormat') ?? false;
   }
 
   Future<void> updateSwitchValue(bool value) async {

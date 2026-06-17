@@ -41,17 +41,60 @@ class _AllHadithScreenState extends State<AllHadithScreen> {
       // body start ===>
       body: GetBuilder<HadithController>(
         builder: (_) {
-          return hadithController.isLoadingHadith.value
-              ? const Center(child: HadisChapterShimmer())
-              : SingleChildScrollView(
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    primary: false,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: Dimensions.PADDING_SIZE_SMALL),
+          if (hadithController.isLoadingHadith.value) {
+            return const Center(child: HadisChapterShimmer());
+          }
+          if (hadithController.hadithModel == null || 
+              hadithController.hadithModel!.hadiths == null || 
+              hadithController.hadithModel!.hadiths!.data == null ||
+              hadithController.hadithModel!.hadiths!.data!.isEmpty) {
+            return Center(child: Text("no_hadith_found".tr));
+          }
+          
+          return ListView.builder(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: Dimensions.PADDING_SIZE_SMALL),
                     itemCount:
-                        hadithController.hadithModel!.hadiths!.data!.length,
+                        hadithController.hadithModel!.hadiths!.data!.length + 1,
                     itemBuilder: (context, index) {
+                      if (index ==
+                          hadithController.hadithModel!.hadiths!.data!.length) {
+                        if (hadithController.hadithModel?.hadiths?.lastPage !=
+                                null &&
+                            hadithController.currentHadithPage >=
+                                hadithController
+                                    .hadithModel!.hadiths!.lastPage!) {
+                          return const SizedBox(height: 20);
+                        }
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 20.0),
+                          child: Center(
+                            child: hadithController.isMoreHadithLoading.value
+                                ? const CircularProgressIndicator()
+                                : OutlinedButton(
+                                    style: OutlinedButton.styleFrom(
+                                      side: BorderSide(
+                                          color:
+                                              Theme.of(context).primaryColor),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(
+                                            Dimensions.RADIUS_LARGE),
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      hadithController.getMoreHadithData(
+                                          Get.arguments[1], Get.arguments[2]);
+                                    },
+                                    child: Text(
+                                      'load_more'.tr,
+                                      style: robotoMedium.copyWith(
+                                          color:
+                                              Theme.of(context).primaryColor),
+                                    ),
+                                  ),
+                          ),
+                        );
+                      }
                       return GestureDetector(
                         onTap: () {
                           Get.toNamed(RouteHelper.hadithDetails,
@@ -106,8 +149,7 @@ class _AllHadithScreenState extends State<AllHadithScreen> {
                         ),
                       );
                     },
-                  ),
-                );
+                  );
         },
       ),
     );

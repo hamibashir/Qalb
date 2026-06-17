@@ -23,7 +23,7 @@ if (flutterVersionName == null) {
 }
 
 android {
-    namespace "com.example.zabi"
+    namespace "com.apexbytelabs.qalb"
     compileSdkVersion 36
     ndkVersion flutter.ndkVersion
 

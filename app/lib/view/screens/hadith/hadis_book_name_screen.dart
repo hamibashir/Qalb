@@ -31,13 +31,7 @@ class HadisBookNameScreen extends StatelessWidget {
         builder: (_) {
           return hadithController.isLoadingHadithChapter.value
               ? const Center(child: HadisBookShimmer())
-              : SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      // list viwe start ===>
-                      ListView.builder(
-                        primary: false,
-                        shrinkWrap: true,
+              : ListView.builder(
                         padding: const EdgeInsets.symmetric(
                             horizontal: Dimensions.PADDING_SIZE_SMALL),
                         itemCount: 6,
@@ -97,10 +91,7 @@ class HadisBookNameScreen extends StatelessWidget {
                             ),
                           );
                         },
-                      ),
-                    ],
-                  ),
-                );
+                      );
         },
       ),
     );

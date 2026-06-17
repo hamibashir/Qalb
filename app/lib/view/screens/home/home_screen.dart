@@ -19,6 +19,8 @@ import 'package:qalb/view/screens/home/widget/bannder_widget.dart';
 import 'package:qalb/view/screens/home/widget/feature_item_widget.dart';
 import 'package:qalb/view/screens/home/widget/today_prayer_list_item.dart';
 
+import 'package:qalb/view/base/premium_dialog.dart';
+import 'package:qalb/controller/monetization_controller.dart';
 import '../../../controller/theme_controller.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -39,6 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
       final isPrayerTme = prefs.getBool(AppConstants.isPrayerTme);
       final saveCityName = prefs.getString(AppConstants.saveCityName);
       prayerTimeController.fetchPrayerTime(
+          reload: false,
           isManualPrayerTme: isPrayerTme ?? false,
           manualCity:
               saveCityName ?? prayerTimeController.currentAddress.toString());
@@ -47,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
     });
     Get.find<PrayerTimeController>().getLocation();
     Get.find<PrayerTimeController>().loadPrayerTimeSettings();
-    Get.put(SettingsController(quranSettingRepo: Get.find()));
+    Get.put(SettingsController(quranSettingRepo: Get.find()), permanent: true);
     Get.find<SettingsController>().fetchMosqueSettingsData();
     SalatWaqtService.initializeSalatWaqt();
   }
@@ -120,12 +123,80 @@ class _HomeScreenState extends State<HomeScreen> {
                         ],
                       ),
                       actions: [
+                        GetBuilder<MonetizationController>(
+                          init: Get.put(MonetizationController(), permanent: true),
+                          builder: (monetizationController) {
+                            return Obx(() => IconButton(
+                              tooltip: "premium".tr,
+                              icon: Icon(
+                                Icons.workspace_premium,
+                                color: monetizationController.isPremium.value 
+                                    ? Colors.amber 
+                                    : Theme.of(context).hintColor,
+                              ),
+                              onPressed: () {
+                                if (monetizationController.isPremium.value) {
+                                  Get.dialog(
+                                    Dialog(
+                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(Dimensions.RADIUS_LARGE)),
+                                      backgroundColor: Theme.of(context).cardColor,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(Dimensions.PADDING_SIZE_LARGE),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            const Icon(Icons.verified, size: 60, color: Colors.green),
+                                            const SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
+                                            Text(
+                                              'Premium Member'.tr,
+                                              style: robotoBold.copyWith(fontSize: Dimensions.FONT_SIZE_EXTRA_LARGE),
+                                            ),
+                                            const SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
+                                            Text(
+                                              'You are already a Premium member. Enjoy the app freely!'.tr,
+                                              style: robotoMedium.copyWith(fontSize: Dimensions.FONT_SIZE_DEFAULT, color: Theme.of(context).textTheme.bodyMedium?.color),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                            const SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
+                                            SizedBox(
+                                              width: double.infinity,
+                                              child: ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor: Colors.green,
+                                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(Dimensions.RADIUS_LARGE)),
+                                                ),
+                                                onPressed: () => Get.back(),
+                                                child: Text('Close'.tr, style: robotoBold.copyWith(color: Colors.white)),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                } else {
+                                  Get.dialog(
+                                    PremiumDialog(
+                                      featureId: 'home_purchase',
+                                      onUnlock: () {
+                                        Get.back(); // Close dialog on ad watch
+                                      },
+                                    ),
+                                    barrierDismissible: true,
+                                  );
+                                }
+                              },
+                            ));
+                          }
+                        ),
                         settingsController.mosqueSettingsApiData!.data!
                                     .showBannerIcon ==
                                 true
                             ? IconButton(
                                 onPressed: () {
-                                  Get.toNamed(RouteHelper.donationTypeList);
+                                  PremiumDialog.checkAndShow(featureId: 'donation', onUnlock: () {
+                                    Get.toNamed(RouteHelper.donationTypeList);
+                                  });
                                 },
                                 icon: Get.isDarkMode
                                     ? SvgPicture.asset(
@@ -171,8 +242,24 @@ class _HomeScreenState extends State<HomeScreen> {
                         packagePrayerTimeLoading ||
                         settingsController.mosqueSettingsApiData == null
                     ? const DashbordShimmerScreen()
-                    : SingleChildScrollView(
-                        physics: const ClampingScrollPhysics(),
+                    : RefreshIndicator(
+                        color: Theme.of(context).primaryColor,
+                        onRefresh: () async {
+                          final prefs = await SharedPreferences.getInstance();
+                          final isPrayerTme = prefs.getBool(AppConstants.isPrayerTme);
+                          final saveCityName = prefs.getString(AppConstants.saveCityName);
+                          
+                          // Force refresh all APIs
+                          await settingsController.fetchMosqueSettingsData(forceRefresh: true);
+                          await prayerTimeController.getLocation(forceRefresh: true);
+                          await prayerTimeController.fetchPrayerTime(
+                            reload: true,
+                            isManualPrayerTme: isPrayerTme ?? false,
+                            manualCity: saveCityName ?? prayerTimeController.currentAddress.toString()
+                          );
+                        },
+                        child: SingleChildScrollView(
+                          physics: const AlwaysScrollableScrollPhysics(),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -367,8 +454,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 .PADDING_SIZE_DEFAULT),
                                         child: GestureDetector(
                                           onTap: () {
-                                            Get.toNamed(
-                                                RouteHelper.donationTypeList);
+                                            PremiumDialog.checkAndShow(featureId: 'donation', onUnlock: () {
+                                              Get.toNamed(RouteHelper.donationTypeList);
+                                            });
                                           },
                                           child: Container(
                                             height: 70,
@@ -489,7 +577,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                         itemName: "compass".tr,
                                         itemIconPath: Images.Icon_Qibla,
                                         onPressed: () {
-                                          Get.toNamed(RouteHelper.compass);
+                                          PremiumDialog.checkAndShow(featureId: 'compass', onUnlock: () {
+                                            Get.toNamed(RouteHelper.compass);
+                                          });
                                         },
                                       ),
 
@@ -498,7 +588,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                         itemName: "nearby".tr,
                                         itemIconPath: Images.Icon_near_mosque,
                                         onPressed: () {
-                                          Get.toNamed(RouteHelper.nearByMosque);
+                                          PremiumDialog.checkAndShow(featureId: 'nearby', onUnlock: () {
+                                            Get.toNamed(RouteHelper.nearByMosque);
+                                          });
                                         },
                                       ),
                                       // Zakat section ===>
@@ -506,8 +598,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                         itemName: "zakat".tr,
                                         itemIconPath: Images.Icon_Zakat,
                                         onPressed: () {
-                                          Get.toNamed(
-                                              RouteHelper.zakatCalculator);
+                                          PremiumDialog.checkAndShow(featureId: 'zakat', onUnlock: () {
+                                            Get.toNamed(RouteHelper.zakatCalculator);
+                                          });
                                         },
                                       ),
                                     ],
@@ -520,6 +613,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ],
                         ),
                       ),
+                    ),
               ),
             );
           },

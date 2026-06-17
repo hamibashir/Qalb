@@ -120,7 +120,7 @@ class SettingsController extends GetxController implements GetxService {
       isTranslateLoading(true);
       update();
       // final response = await http
-      //     .get(Uri.parse("https://zabi-dev.theme29.com/api/translators"));
+      //     .get(Uri.parse("https://qalb.apexbytelabs.online/api/translators"));
 
       final response = await quranSettingRepo.getTranslatorRepo();
 
@@ -182,7 +182,8 @@ class SettingsController extends GetxController implements GetxService {
   MosqueSettingsModel? mosqueSettingsApiData;
 
 // get juz list form here
-  Future<void> fetchMosqueSettingsData({String? translatorId}) async {
+  Future<void> fetchMosqueSettingsData({String? translatorId, bool forceRefresh = false}) async {
+    if (!forceRefresh && mosqueSettingsApiData != null) return;
     try {
       isMosqueSettingsLoading(true);
 

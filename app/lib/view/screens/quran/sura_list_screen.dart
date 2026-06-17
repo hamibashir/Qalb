@@ -79,8 +79,8 @@ class SuraList extends StatelessWidget {
                 Expanded(
                   child: TabBarView(
                     children: [
-                      const Center(child: SuraListWidget()),
-                      const Center(child: JuzListWidget()),
+                      const SuraListWidget(),
+                      const JuzListWidget(),
                       BookmarkTab()
                     ],
                   ),

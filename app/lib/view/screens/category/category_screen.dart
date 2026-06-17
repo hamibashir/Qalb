@@ -11,6 +11,7 @@ import 'package:qalb/view/base/custom_app_bar.dart';
 import 'package:qalb/view/screens/category/widget/grid_view_item_widget.dart';
 import 'package:qalb/view/screens/category/widget/list_view_item_widget.dart';
 
+import 'package:qalb/view/base/premium_dialog.dart';
 import '../../../util/dimensions.dart';
 
 class CategoryScreen extends StatelessWidget {
@@ -88,7 +89,9 @@ class CategoryScreen extends StatelessWidget {
                               // quibla item ===>
                               ListViewItemWidget(
                                 onPressed: () {
-                                  Get.toNamed(RouteHelper.compass);
+                                  PremiumDialog.checkAndShow(featureId: 'compass', onUnlock: () {
+                                    Get.toNamed(RouteHelper.compass);
+                                  });
                                 },
                                 itemName: "compass".tr,
                                 itemImage: Images.Icon_Qibla,
@@ -97,7 +100,9 @@ class CategoryScreen extends StatelessWidget {
                               // near by mosque item ===>
                               ListViewItemWidget(
                                 onPressed: () {
-                                  Get.toNamed(RouteHelper.nearByMosque);
+                                  PremiumDialog.checkAndShow(featureId: 'nearby', onUnlock: () {
+                                    Get.toNamed(RouteHelper.nearByMosque);
+                                  });
                                 },
                                 itemName: "nearby".tr,
                                 itemImage: Images.Icon_near_mosque,
@@ -151,7 +156,9 @@ class CategoryScreen extends StatelessWidget {
                               // zakat calculator item ===>
                               ListViewItemWidget(
                                 onPressed: () {
-                                  Get.toNamed(RouteHelper.zakatCalculator);
+                                  PremiumDialog.checkAndShow(featureId: 'zakat', onUnlock: () {
+                                    Get.toNamed(RouteHelper.zakatCalculator);
+                                  });
                                 },
                                 itemName: "zakat_calculator".tr,
                                 itemImage: Images.Icon_Zakat,
@@ -160,7 +167,9 @@ class CategoryScreen extends StatelessWidget {
                               // haram  item ===>
                               ListViewItemWidget(
                                 onPressed: () {
-                                  Get.toNamed(RouteHelper.haramIngredientsFood);
+                                  PremiumDialog.checkAndShow(featureId: 'haram', onUnlock: () {
+                                    Get.toNamed(RouteHelper.haramIngredientsFood);
+                                  });
                                 },
                                 itemName: "haram_codes".tr,
                                 itemImage: Images.Icon_Haram,
@@ -223,7 +232,9 @@ class CategoryScreen extends StatelessWidget {
                             // quibla item ===>
                             GridViewItemWidget(
                               onPressed: () {
-                                Get.toNamed(RouteHelper.compass);
+                                PremiumDialog.checkAndShow(featureId: 'compass', onUnlock: () {
+                                  Get.toNamed(RouteHelper.compass);
+                                });
                               },
                               itemName: "compass".tr,
                               itemImage: Images.Icon_Qibla,
@@ -232,7 +243,9 @@ class CategoryScreen extends StatelessWidget {
                             // near by mosque item ===>
                             GridViewItemWidget(
                               onPressed: () {
-                                Get.toNamed(RouteHelper.nearByMosque);
+                                PremiumDialog.checkAndShow(featureId: 'nearby', onUnlock: () {
+                                  Get.toNamed(RouteHelper.nearByMosque);
+                                });
                               },
                               itemName: "nearby".tr,
                               itemImage: Images.Icon_near_mosque,
@@ -286,7 +299,9 @@ class CategoryScreen extends StatelessWidget {
                             // zakat calculator item ===>
                             GridViewItemWidget(
                               onPressed: () {
-                                Get.toNamed(RouteHelper.zakatCalculator);
+                                PremiumDialog.checkAndShow(featureId: 'zakat', onUnlock: () {
+                                  Get.toNamed(RouteHelper.zakatCalculator);
+                                });
                               },
                               itemName: "zakat_calculator".tr,
                               itemImage: Images.Icon_Zakat,
@@ -295,7 +310,9 @@ class CategoryScreen extends StatelessWidget {
                             // haram  item ===>
                             GridViewItemWidget(
                               onPressed: () {
-                                Get.toNamed(RouteHelper.haramIngredientsFood);
+                                PremiumDialog.checkAndShow(featureId: 'haram', onUnlock: () {
+                                  Get.toNamed(RouteHelper.haramIngredientsFood);
+                                });
                               },
                               itemName: "haram_codes".tr,
                               itemImage: Images.Icon_Haram,

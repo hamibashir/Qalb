@@ -18,8 +18,7 @@ class AyanTranslationWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: GetBuilder<QuranController>(
+    return GetBuilder<QuranController>(
         builder: (quranController) {
           if (quranController.isSuraDetaileLoading.value ||
               quranController.suraDetaileApiData == null) {
@@ -31,27 +30,30 @@ class AyanTranslationWidget extends StatelessWidget {
           final chapterInfo =
               quranController.suraDetaileApiData!.data!.chapterInfo!;
 
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              if (chapter.id != 1 && chapter.id != 9) _buildBismillah(context),
-              ListView.builder(
+          return CustomScrollView(
+            slivers: [
+              if (chapter.id != 1 && chapter.id != 9)
+                SliverToBoxAdapter(
+                  child: _buildBismillah(context),
+                ),
+              SliverPadding(
                 padding: const EdgeInsets.symmetric(
                     horizontal: Dimensions.PADDING_SIZE_EXTRA_SMALL),
-                itemCount: chapterInfo.length,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (context, chapterIndex) {
-                  final chapterData = chapterInfo[chapterIndex];
-                  return _buildChapterCardList(
-                      context, quranController, chapterData);
-                },
+                sliver: SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, chapterIndex) {
+                      final chapterData = chapterInfo[chapterIndex];
+                      return _buildChapterCardList(
+                          context, quranController, chapterData);
+                    },
+                    childCount: chapterInfo.length,
+                  ),
+                ),
               ),
             ],
           );
         },
-      ),
-    );
+      );
   }
 
   Widget _buildBismillah(BuildContext context) {

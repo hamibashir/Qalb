@@ -43,12 +43,16 @@ class _HadithChaptersScreenState extends State<HadithChaptersScreen> {
       // start body ===>
       body: GetBuilder<HadithController>(
         builder: (_) {
-          return hadithController.isLoadingHadithChapter.value
-              ? const Center(child: HadisChapterShimmer())
-              : SingleChildScrollView(
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    primary: false,
+          if (hadithController.isLoadingHadithChapter.value) {
+            return const Center(child: HadisChapterShimmer());
+          }
+          if (hadithController.hadithChapterModel == null || 
+              hadithController.hadithChapterModel!.chapters == null || 
+              hadithController.hadithChapterModel!.chapters!.isEmpty) {
+            return Center(child: Text("no_chapter_found".tr));
+          }
+          
+          return ListView.builder(
                     padding: const EdgeInsets.symmetric(
                         horizontal: Dimensions.PADDING_SIZE_SMALL),
                     itemCount:
@@ -127,8 +131,7 @@ class _HadithChaptersScreenState extends State<HadithChaptersScreen> {
                         ),
                       );
                     },
-                  ),
-                );
+                  );
         },
       ),
     );

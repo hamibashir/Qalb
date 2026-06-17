@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -26,9 +27,24 @@ class QuranController extends GetxController implements GetxService {
     try {
       isSifatNameListLoading(true);
 
+      final prefs = await SharedPreferences.getInstance();
+      final cachedData = prefs.getString('sifat_name_list_cache');
+      
+      if (cachedData != null) {
+        try {
+          sifatNameApiData = SifatNameListModel.fromJson(jsonDecode(cachedData));
+          isSifatNameListLoading(false);
+          update();
+          return;
+        } catch (e) {
+          // If decoding fails, fallback to network
+        }
+      }
+
       final response = await quranRepo.getSifatNameRepo();
 
       if (response.statusCode == 200) {
+        await prefs.setString('sifat_name_list_cache', jsonEncode(response.body));
         sifatNameApiData = SifatNameListModel.fromJson(response.body);
       }
     } catch (e) {
@@ -49,10 +65,26 @@ class QuranController extends GetxController implements GetxService {
     try {
       isSifatNameDetailsLoading(true);
 
+      final prefs = await SharedPreferences.getInstance();
+      final cacheKey = 'sifat_name_details_cache_$sifatNameId';
+      final cachedData = prefs.getString(cacheKey);
+
+      if (cachedData != null) {
+        try {
+          sifatnameDetailsApidata = SifatNameDetailsModel.fromJson(jsonDecode(cachedData));
+          isSifatNameDetailsLoading(false);
+          update();
+          return;
+        } catch (e) {
+          // Fallback to network
+        }
+      }
+
       final response =
           await quranRepo.getSifatNameDetailsRepo(sifatNameId.toString());
 
       if (response.statusCode == 200) {
+        await prefs.setString(cacheKey, jsonEncode(response.body));
         sifatnameDetailsApidata = SifatNameDetailsModel.fromJson(response.body);
       }
     } catch (e) {

@@ -10,7 +10,7 @@ class AppConstants {
   // main base url
   static const String BASE_URL = "https://qalb.apexbytelabs.online";
   // dev base url
-  // static const String BASE_URL = "https://zabi-dev.theme29.com";
+  // static const String BASE_URL = "https://qalb.apexbytelabs.online";
 
   // API's and API Kay's
   static const String HADITH_BASE_URL = 'https://www.hadithapi.com/public';

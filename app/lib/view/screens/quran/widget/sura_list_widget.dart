@@ -27,7 +27,6 @@ class SuraListWidget extends StatelessWidget {
               )
             : ListView.builder(
                 primary: false,
-                shrinkWrap: true,
                 padding: const EdgeInsets.symmetric(
                     horizontal: Dimensions.PADDING_SIZE_SMALL),
                 itemCount: quranController.suraListApiData!.data!.length,

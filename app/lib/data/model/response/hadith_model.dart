@@ -72,7 +72,7 @@ class Hadiths {
     }
     nextPageUrl = json['next_page_url'];
     path = json['path'];
-    perPage = json['per_page'];
+    perPage = json['per_page']?.toString();
     prevPageUrl = json['prev_page_url'];
     to = json['to'];
     total = json['total'];
@@ -195,15 +195,15 @@ class Data {
 
   Data.fromJson(dynamic json) {
     id = json['id'];
-    hadithNumber = json['hadithNumber'];
-    englishNarrator = json['englishNarrator'];
-    hadithEnglish = json['hadithEnglish'];
-    hadithUrdu = json['hadithUrdu'];
-    urduNarrator = json['urduNarrator'];
-    hadithArabic = json['hadithArabic'];
-    chapterId = json['chapterId'];
-    bookSlug = json['bookSlug'];
-    volume = json['volume'];
+    hadithNumber = json['hadithNumber']?.toString();
+    englishNarrator = json['englishNarrator']?.toString();
+    hadithEnglish = json['hadithEnglish']?.toString();
+    hadithUrdu = json['hadithUrdu']?.toString();
+    urduNarrator = json['urduNarrator']?.toString();
+    hadithArabic = json['hadithArabic']?.toString();
+    chapterId = json['chapterId']?.toString();
+    bookSlug = json['bookSlug']?.toString();
+    volume = json['volume']?.toString();
     book = json['book'] != null ? Book.fromJson(json['book']) : null;
     chapter =
         json['chapter'] != null ? Chapter.fromJson(json['chapter']) : null;
@@ -282,11 +282,11 @@ class Chapter {
 
   Chapter.fromJson(dynamic json) {
     id = json['id'];
-    chapterNumber = json['chapterNumber'];
-    chapterEnglish = json['chapterEnglish'];
-    chapterUrdu = json['chapterUrdu'];
-    chapterArabic = json['chapterArabic'];
-    bookSlug = json['bookSlug'];
+    chapterNumber = json['chapterNumber']?.toString();
+    chapterEnglish = json['chapterEnglish']?.toString();
+    chapterUrdu = json['chapterUrdu']?.toString();
+    chapterArabic = json['chapterArabic']?.toString();
+    bookSlug = json['bookSlug']?.toString();
   }
   num? id;
   String? chapterNumber;

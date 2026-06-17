@@ -17,20 +17,17 @@ class JuzListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Get.find<QuranController>().fetchJuzListData();
-    return SingleChildScrollView(
-      child: GetBuilder<QuranController>(
+    return GetBuilder<QuranController>(
         builder: (quranController) {
           return quranController.isJuzListLoading.value ||
                   quranController.juzListApiData == null
               ? const Center(
                   child: QuranListShimmer(),
                 )
-              : Column(
-                  children: [
-                    for (var juz = 0;
-                        juz < quranController.juzListApiData!.data!.length;
-                        juz++)
-                      Column(
+              : ListView.builder(
+                  itemCount: quranController.juzListApiData!.data!.length,
+                  itemBuilder: (context, juz) {
+                    return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           // juz name ===>
@@ -155,11 +152,10 @@ class JuzListWidget extends StatelessWidget {
                             },
                           ),
                         ],
-                      ),
-                  ],
+                      );
+                  },
                 );
         },
-      ),
-    );
+      );
   }
 }

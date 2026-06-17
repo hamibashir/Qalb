@@ -44,10 +44,7 @@ class SifatNameScreen extends StatelessWidget {
                             fontSize: Dimensions.FONT_SIZE_LARGE),
                       ),
                     )
-                  : SingleChildScrollView(
-                      child: ListView.builder(
-                        primary: false,
-                        shrinkWrap: true,
+                  : ListView.builder(
                         padding: const EdgeInsets.symmetric(
                             horizontal: Dimensions.PADDING_SIZE_EXTRA_SMALL),
                         itemCount: sifatNameListController
@@ -124,7 +121,6 @@ class SifatNameScreen extends StatelessWidget {
                             ),
                           );
                         },
-                      ),
                     ),
         );
       },
