@@ -10,9 +10,9 @@ class PremiumDialog extends StatelessWidget {
 
   const PremiumDialog({super.key, required this.featureId, required this.onUnlock});
 
-  static void checkAndShow({required String featureId, required Function() onUnlock}) {
+  static Future<void> checkAndShow({required String featureId, required Function() onUnlock}) async {
     final MonetizationController controller = Get.put(MonetizationController(), permanent: true);
-    if (controller.isFeatureUnlocked(featureId)) {
+    if (await controller.isFeatureUnlocked(featureId)) {
       onUnlock();
     } else {
       Get.dialog(
@@ -58,7 +58,7 @@ class PremiumDialog extends StatelessWidget {
             
             // Subtitle
             Text(
-              'Unlock this feature for 24 hours by watching a quick ad, or upgrade to Premium to unlock everything forever!'.tr,
+              'Unlock this feature for 24 hours by watching a quick ad.'.tr,
               style: robotoMedium.copyWith(
                 fontSize: Dimensions.FONT_SIZE_DEFAULT,
                 color: Theme.of(context).textTheme.bodyMedium?.color,
@@ -95,27 +95,6 @@ class PremiumDialog extends StatelessWidget {
               )),
             ),
             
-            const SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
-            
-            // Buy Premium Button
-            SizedBox(
-              width: double.infinity,
-              child: OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                  side: BorderSide(color: Theme.of(context).primaryColor),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(Dimensions.RADIUS_LARGE)),
-                  padding: const EdgeInsets.symmetric(vertical: Dimensions.PADDING_SIZE_DEFAULT),
-                ),
-                onPressed: () {
-                  Get.back(); // close dialog
-                  controller.purchasePremium();
-                },
-                child: Text(
-                  'Buy Lifetime Premium'.tr,
-                  style: robotoBold.copyWith(color: Theme.of(context).primaryColor),
-                ),
-              ),
-            ),
           ],
         ),
       ),

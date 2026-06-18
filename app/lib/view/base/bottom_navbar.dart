@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:qalb/util/images.dart';
+import 'package:qalb/view/base/premium_dialog.dart';
 import 'package:qalb/view/screens/category/category_screen.dart';
 import 'package:qalb/view/screens/compass/compass_screen.dart';
 import 'package:qalb/view/screens/home/home_screen.dart';
@@ -144,7 +145,19 @@ class _BottomNavbarScreenState extends State<BottomNavbarScreen> {
     required String label,
   }) {
     return GestureDetector(
-      onTap: () => _selectPage(index),
+      onTap: () {
+        if (index == 1) {
+          PremiumDialog.checkAndShow(featureId: 'compass', onUnlock: () {
+            _selectPage(index);
+          });
+        } else if (index == 3) {
+          PremiumDialog.checkAndShow(featureId: 'nearby', onUnlock: () {
+            _selectPage(index);
+          });
+        } else {
+          _selectPage(index);
+        }
+      },
       child: SizedBox(
         width: 75,
         child: Column(

@@ -9,7 +9,6 @@ import 'package:qalb/controller/audio_player_controller.dart';
 import 'package:qalb/controller/bookmark_controller.dart';
 import 'package:qalb/controller/category_controller.dart';
 import 'package:qalb/controller/dhikr_controller.dart';
-import 'package:qalb/controller/donation_controller.dart';
 import 'package:qalb/controller/dua_controller.dart';
 import 'package:qalb/controller/hadith_controller.dart';
 import 'package:qalb/controller/localization_controller.dart';
@@ -24,7 +23,6 @@ import 'package:qalb/controller/zakat_calculator_controller.dart';
 import 'package:qalb/data/api/api_client.dart';
 import 'package:qalb/data/model/response/language_model.dart';
 import 'package:qalb/data/repository/dikir_list_repo.dart';
-import 'package:qalb/data/repository/donation_repo.dart';
 import 'package:qalb/data/repository/dua_list_repo.dart';
 import 'package:qalb/data/repository/quran_setting_repo.dart';
 import 'package:qalb/data/repository/sifatname_list_repo.dart';
@@ -48,10 +46,7 @@ Future<Map<String, Map<String, String>>> init() async {
       () => DhikrRepo(sharedPreferences: Get.find(), apiClient: Get.find()));
   Get.lazyPut(
       () => QuranRepo(sharedPreferences: Get.find(), apiClient: Get.find()));
-  Get.lazyPut(() =>
-      QuranSettingsRepo(sharedPreferences: Get.find(), apiClient: Get.find()));
-  Get.lazyPut(
-      () => DonationRepo(sharedPreferences: Get.find(), apiClient: Get.find()));
+  Get.lazyPut(() => QuranSettingsRepo(sharedPreferences: Get.find(), apiClient: Get.find()));
 
   //new controller
   Get.lazyPut(
@@ -60,7 +55,6 @@ Future<Map<String, Map<String, String>>> init() async {
       fenix: true);
   Get.lazyPut(() => DhikrController(dhikrRepo: Get.find()));
   Get.lazyPut(() => DuaController(duaRepo: Get.find()));
-  Get.lazyPut(() => DonationController(donationRepo: Get.find()));
   Get.lazyPut(() => QuranController(quranRepo: Get.find()));
   Get.lazyPut(() => PrayerTimeController(apiClient: Get.find()));
   Get.lazyPut(() => NotiSoundController());

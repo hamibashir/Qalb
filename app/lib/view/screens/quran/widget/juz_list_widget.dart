@@ -24,7 +24,12 @@ class JuzListWidget extends StatelessWidget {
               ? const Center(
                   child: QuranListShimmer(),
                 )
-              : ListView.builder(
+              : RefreshIndicator(
+                onRefresh: () async {
+                  await Get.find<QuranController>().fetchJuzListData(isRefresh: true);
+                },
+                child: ListView.builder(
+                  physics: const AlwaysScrollableScrollPhysics(),
                   itemCount: quranController.juzListApiData!.data!.length,
                   itemBuilder: (context, juz) {
                     return Column(
@@ -154,7 +159,8 @@ class JuzListWidget extends StatelessWidget {
                         ],
                       );
                   },
-                );
+                ),
+              );
         },
       );
   }

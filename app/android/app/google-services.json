@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "809662917980",
+    "project_id": "qalb-95247",
+    "storage_bucket": "qalb-95247.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:809662917980:android:93205b9915e24e8e65a599",
+        "android_client_info": {
+          "package_name": "com.apexbytelabs.qalb"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBgQgMkdFZoVCCy_uxPRCoErd9NIqoVNRQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

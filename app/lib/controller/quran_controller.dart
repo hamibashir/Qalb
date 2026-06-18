@@ -108,17 +108,34 @@ class QuranController extends GetxController implements GetxService {
   int? suraNumber;
 
 // get sura list function
-  Future<void> fetchSuraListData({String? translatorId}) async {
+  Future<void> fetchSuraListData({String? translatorId, bool isRefresh = false}) async {
     try {
       isSuraListLoading(true);
+      update();
       final prefs = await SharedPreferences.getInstance();
       var selectedTranslatorId =
           translatorId ?? prefs.getString('selectedTranslatorId') ?? 1;
+
+      final cacheKey = 'sura_list_cache_$selectedTranslatorId';
+      if (!isRefresh) {
+        final cachedData = prefs.getString(cacheKey);
+        if (cachedData != null) {
+          try {
+            suraListApiData = SuraListModel.fromJson(jsonDecode(cachedData));
+            isSuraListLoading(false);
+            update();
+            return;
+          } catch (e) {
+            // fallback to network
+          }
+        }
+      }
 
       final response =
           await quranRepo.getSuraListRepo(selectedTranslatorId.toString());
 
       if (response.statusCode == 200) {
+        await prefs.setString(cacheKey, jsonEncode(response.body));
         suraListApiData = SuraListModel.fromJson(response.body);
       }
     } catch (e) {
@@ -133,7 +150,7 @@ class QuranController extends GetxController implements GetxService {
 
 // get sura detail function
   Future<void> fetchSuraDetaileData(
-      {String? suraId, String? translatorId}) async {
+      {String? suraId, String? translatorId, bool isRefresh = false}) async {
     try {
       isSuraDetaileLoading(true);
       update();
@@ -141,10 +158,26 @@ class QuranController extends GetxController implements GetxService {
       var selectedTranslatorId =
           translatorId ?? prefs.getString('selectedTranslatorId') ?? 1;
 
+      final cacheKey = 'sura_detaile_cache_${suraId}_$selectedTranslatorId';
+      if (!isRefresh) {
+        final cachedData = prefs.getString(cacheKey);
+        if (cachedData != null) {
+          try {
+            suraDetaileApiData = SuraDetaileModel.fromJson(jsonDecode(cachedData));
+            isSuraDetaileLoading(false);
+            update();
+            return;
+          } catch (e) {
+            // fallback to network
+          }
+        }
+      }
+
       final response = await quranRepo.getSuraDetailsRepo(
           suraId.toString(), selectedTranslatorId.toString());
 
       if (response.statusCode == 200) {
+        await prefs.setString(cacheKey, jsonEncode(response.body));
         suraDetaileApiData = SuraDetaileModel.fromJson(response.body);
       }
     } catch (e) {
@@ -158,17 +191,34 @@ class QuranController extends GetxController implements GetxService {
   }
 
 // get juz list form here
-  Future<void> fetchJuzListData({String? translatorId}) async {
+  Future<void> fetchJuzListData({String? translatorId, bool isRefresh = false}) async {
     try {
       isJuzListLoading(true);
+      update();
       final prefs = await SharedPreferences.getInstance();
       var selectedTranslatorId =
           translatorId ?? prefs.getString('selectedTranslatorId') ?? 1;
+
+      final cacheKey = 'juz_list_cache_$selectedTranslatorId';
+      if (!isRefresh) {
+        final cachedData = prefs.getString(cacheKey);
+        if (cachedData != null) {
+          try {
+            juzListApiData = JuzListModel.fromJson(jsonDecode(cachedData));
+            isJuzListLoading(false);
+            update();
+            return;
+          } catch (e) {
+            // fallback to network
+          }
+        }
+      }
 
       final response =
           await quranRepo.getJuzListRepo(selectedTranslatorId.toString());
 
       if (response.statusCode == 200) {
+        await prefs.setString(cacheKey, jsonEncode(response.body));
         juzListApiData = JuzListModel.fromJson(response.body);
       }
     } catch (e) {

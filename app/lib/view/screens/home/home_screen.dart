@@ -20,7 +20,6 @@ import 'package:qalb/view/screens/home/widget/feature_item_widget.dart';
 import 'package:qalb/view/screens/home/widget/today_prayer_list_item.dart';
 
 import 'package:qalb/view/base/premium_dialog.dart';
-import 'package:qalb/controller/monetization_controller.dart';
 import '../../../controller/theme_controller.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -123,72 +122,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         ],
                       ),
                       actions: [
-                        GetBuilder<MonetizationController>(
-                          init: Get.put(MonetizationController(), permanent: true),
-                          builder: (monetizationController) {
-                            return Obx(() => IconButton(
-                              tooltip: "premium".tr,
-                              icon: Icon(
-                                Icons.workspace_premium,
-                                color: monetizationController.isPremium.value 
-                                    ? Colors.amber 
-                                    : Theme.of(context).hintColor,
-                              ),
-                              onPressed: () {
-                                if (monetizationController.isPremium.value) {
-                                  Get.dialog(
-                                    Dialog(
-                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(Dimensions.RADIUS_LARGE)),
-                                      backgroundColor: Theme.of(context).cardColor,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(Dimensions.PADDING_SIZE_LARGE),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            const Icon(Icons.verified, size: 60, color: Colors.green),
-                                            const SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
-                                            Text(
-                                              'Premium Member'.tr,
-                                              style: robotoBold.copyWith(fontSize: Dimensions.FONT_SIZE_EXTRA_LARGE),
-                                            ),
-                                            const SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
-                                            Text(
-                                              'You are already a Premium member. Enjoy the app freely!'.tr,
-                                              style: robotoMedium.copyWith(fontSize: Dimensions.FONT_SIZE_DEFAULT, color: Theme.of(context).textTheme.bodyMedium?.color),
-                                              textAlign: TextAlign.center,
-                                            ),
-                                            const SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
-                                            SizedBox(
-                                              width: double.infinity,
-                                              child: ElevatedButton(
-                                                style: ElevatedButton.styleFrom(
-                                                  backgroundColor: Colors.green,
-                                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(Dimensions.RADIUS_LARGE)),
-                                                ),
-                                                onPressed: () => Get.back(),
-                                                child: Text('Close'.tr, style: robotoBold.copyWith(color: Colors.white)),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                } else {
-                                  Get.dialog(
-                                    PremiumDialog(
-                                      featureId: 'home_purchase',
-                                      onUnlock: () {
-                                        Get.back(); // Close dialog on ad watch
-                                      },
-                                    ),
-                                    barrierDismissible: true,
-                                  );
-                                }
-                              },
-                            ));
-                          }
-                        ),
                         settingsController.mosqueSettingsApiData!.data!
                                     .showBannerIcon ==
                                 true

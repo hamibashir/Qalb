@@ -1,16 +1,16 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+// import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:qalb/controller/nearby_mosque_controller.dart';
-import 'package:qalb/helper/translator_helper.dart';
-import 'package:qalb/shimmer/all_shimmer_loder.dart';
+// import 'package:qalb/controller/nearby_mosque_controller.dart';
+// import 'package:qalb/helper/translator_helper.dart';
+// import 'package:qalb/shimmer/all_shimmer_loder.dart';
 import 'package:qalb/view/base/custom_app_bar.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:qalb/view/base/location_error_widget.dart';
+// import 'package:url_launcher/url_launcher.dart';
+// import 'package:qalb/view/base/location_error_widget.dart';
 import '../../../util/dimensions.dart';
-import '../../../util/images.dart';
+// import '../../../util/images.dart';
 import '../../../util/styles.dart';
 
 class NearbyMosque extends StatelessWidget {
@@ -19,6 +19,8 @@ class NearbyMosque extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    /* 
+    // KEEPING OLD LOGIC COMMENTED OUT FOR FUTURE RE-ACTIVATION
     Get.put(NearbyMosqueController()).getLocation();
     return Scaffold(
       // Appbar start ===>
@@ -167,6 +169,84 @@ class NearbyMosque extends StatelessWidget {
                     ),
                   ));
           },
+        ),
+      ),
+    );
+    */
+
+    return Scaffold(
+      appBar: CustomAppBar(
+        title: 'nearby_mosque'.tr,
+        isBackButtonExist: appBackButton == true ? true : false,
+      ),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(Dimensions.PADDING_SIZE_EXTRA_LARGE),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.mosque_outlined, // Fallback icon
+                size: 80,
+                color: Theme.of(context).primaryColor.withOpacity(0.5),
+              ),
+              const SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
+              Text(
+                "Feature Coming Soon",
+                style: robotoBold.copyWith(
+                  fontSize: Dimensions.FONT_SIZE_EXTRA_LARGE,
+                  color: Theme.of(context).primaryColor,
+                ),
+              ),
+              const SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
+              Text(
+                "This feature will show nearby mosques using your location and map data. It will help you find the closest mosques around you in future updates.",
+                textAlign: TextAlign.center,
+                style: robotoRegular.copyWith(
+                  fontSize: Dimensions.FONT_SIZE_DEFAULT,
+                  color: Theme.of(context).hintColor,
+                  height: 1.5,
+                ),
+              ),
+              const SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_LARGE),
+              Container(
+                padding: const EdgeInsets.all(Dimensions.PADDING_SIZE_DEFAULT),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor.withOpacity(0.05),
+                  borderRadius: BorderRadius.circular(Dimensions.RADIUS_DEFAULT),
+                  border: Border.all(color: Theme.of(context).primaryColor.withOpacity(0.1)),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(Icons.location_on_outlined, size: 20, color: Theme.of(context).primaryColor),
+                        const SizedBox(width: Dimensions.PADDING_SIZE_SMALL),
+                        Text("Uses user location", style: robotoMedium),
+                      ],
+                    ),
+                    const SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
+                    Row(
+                      children: [
+                        Icon(Icons.map_outlined, size: 20, color: Theme.of(context).primaryColor),
+                        const SizedBox(width: Dimensions.PADDING_SIZE_SMALL),
+                        Text("Shows nearest mosques on map", style: robotoMedium),
+                      ],
+                    ),
+                    const SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
+                    Row(
+                      children: [
+                        Icon(Icons.directions_walk, size: 20, color: Theme.of(context).primaryColor),
+                        const SizedBox(width: Dimensions.PADDING_SIZE_SMALL),
+                        Text("Provides distance and directions", style: robotoMedium),
+                      ],
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

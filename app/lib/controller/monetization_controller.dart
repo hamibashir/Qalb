@@ -1,16 +1,10 @@
 import 'dart:io';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MonetizationController extends GetxController {
-  // Constants
-  static const String _premiumKey = 'is_premium';
-
   // State
-  RxBool isPremium = false.obs;
   RxMap<String, DateTime> adUnlockExpiries = <String, DateTime>{}.obs;
   RxBool isAdLoading = false.obs;
   
@@ -26,9 +20,6 @@ class MonetizationController extends GetxController {
   Future<void> _loadSavedState() async {
     final prefs = await SharedPreferences.getInstance();
     
-    // Check premium
-    isPremium.value = prefs.getBool(_premiumKey) ?? false;
-    
     // Check ad unlock for all features
     final keys = prefs.getKeys();
     for (var key in keys) {
@@ -42,11 +33,16 @@ class MonetizationController extends GetxController {
     }
   }
 
-  bool isFeatureUnlocked(String featureId) {
-    if (isPremium.value) return true;
-    final expiry = adUnlockExpiries[featureId];
-    if (expiry != null && DateTime.now().isBefore(expiry)) {
-      return true;
+  Future<bool> isFeatureUnlocked(String featureId) async {
+    // Read directly from SharedPreferences to avoid race conditions on app start
+    final prefs = await SharedPreferences.getInstance();
+    final expiryString = prefs.getString('ad_unlock_expiry_$featureId');
+    if (expiryString != null) {
+      final expiry = DateTime.parse(expiryString);
+      if (DateTime.now().isBefore(expiry)) {
+        adUnlockExpiries[featureId] = expiry; // sync local cache
+        return true;
+      }
     }
     return false;
   }
@@ -54,7 +50,7 @@ class MonetizationController extends GetxController {
   // --- AdMob ---
   String get rewardedAdUnitId {
     if (Platform.isAndroid) {
-      return 'ca-app-pub-3940256099942544/5224354917'; // Android Test ID
+      return 'ca-app-pub-9732144098985211/5417327251'; // Android Production ID
     } else if (Platform.isIOS) {
       return 'ca-app-pub-3940256099942544/1712485313'; // iOS Test ID
     }
@@ -106,52 +102,4 @@ class MonetizationController extends GetxController {
     });
   }
 
-  // --- In-App Purchase ---
-  // In production, this must use InAppPurchase connection streams.
-  // We mock a successful purchase for demonstration.
-  Future<void> purchasePremium() async {
-    // In production, uncomment the InAppPurchase verification:
-    // final bool available = await InAppPurchase.instance.isAvailable();
-    // if (!available) {
-    //   Get.snackbar('Error', 'Store is not available.');
-    //   return;
-    // }
-    
-    // Simulate payment process
-    await Future.delayed(const Duration(seconds: 1));
-    await grantPremium();
-  }
-
-  Future<void> grantPremium() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(_premiumKey, true);
-    isPremium.value = true;
-    Get.dialog(
-      Dialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Icon(Icons.check_circle, size: 60, color: Colors.green),
-              const SizedBox(height: 15),
-              Text('Success'.tr, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
-              const SizedBox(height: 10),
-              Text(
-                'Premium unlocked forever! Thank you for your support.'.tr,
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-                onPressed: () => Get.back(),
-                child: Text('Close'.tr, style: const TextStyle(color: Colors.white)),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
 }

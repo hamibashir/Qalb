@@ -18,7 +18,6 @@ import 'package:qalb/view/screens/haram_ingredients_food/haram_ingredients_food.
 import 'package:qalb/view/screens/home/home_screen.dart';
 import 'package:qalb/view/screens/nearby_mosque/nearby_mosque_screen.dart';
 import 'package:qalb/view/screens/payment/donation_type_screen.dart';
-import 'package:qalb/view/screens/payment/payment_type_screen.dart';
 import 'package:qalb/view/screens/quran/sura_detaile_screen.dart';
 import 'package:qalb/view/screens/quran/sura_list_screen.dart';
 import 'package:qalb/view/screens/settings/settings_screen.dart';
@@ -27,8 +26,6 @@ import 'package:qalb/view/screens/sifat_name/sifat_name_screen.dart';
 import 'package:qalb/view/screens/splash/splash_screen.dart';
 import 'package:qalb/view/screens/zakat/zakat_calculator.dart';
 import 'package:qalb/view/screens/zakat/zakat_detaile.dart';
-
-import '../view/screens/payment/donated_list.dart';
 
 class RouteHelper {
   static String initial = "/";
@@ -55,9 +52,7 @@ class RouteHelper {
   static String suraDetaile = "/suraDetaile";
   static String duaAdd = "/duaAdd";
   static String settings = "/settings";
-  static String userDonatedList = "/userDonatedList";
   static String donationTypeList = "/donationTypeList";
-  static String paymentType = "/paymentType";
   static String recters = "/recters";
   static String audioList = "/audioList";
 
@@ -85,10 +80,7 @@ class RouteHelper {
   static String getSuraDetailePageRoute() => suraDetaile;
   static String getDuaAddPageRoute() => duaAdd;
   static String getSettingsPageRoute() => settings;
-  static String getDonationListPageRoute(String value) =>
-      "$userDonatedList?value=$value";
   static String getDonationTypeListPageRoute() => donationTypeList;
-  static String getPaymentTypeListPageRoute() => paymentType;
   static String getRectersPageRoute() => recters;
   static String getAudioListPageRoute() => audioList;
 
@@ -190,17 +182,8 @@ class RouteHelper {
         page: () => const SettingsScreen(appBackButton: true),
         transition: Transition.cupertinoDialog),
     GetPage(
-        name: userDonatedList,
-        page: () => UserDonateScreen(
-            appBackButton: true, value: Get.parameters['value'] ?? '1'),
-        transition: Transition.cupertinoDialog),
-    GetPage(
         name: donationTypeList,
         page: () => const DonationTypeScreen(appBackButton: true),
-        transition: Transition.cupertinoDialog),
-    GetPage(
-        name: paymentType,
-        page: () => PaymentTypeScreen(appBackButton: true),
         transition: Transition.cupertinoDialog),
     GetPage(
         name: recters,

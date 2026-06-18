@@ -189,11 +189,11 @@ class CategoryScreen extends StatelessWidget {
                                       true)
                                 ListViewItemWidget(
                                   onPressed: () {
-                                    Get.toNamed(
-                                        RouteHelper.getDonationListPageRoute(
-                                            "1"));
+                                    PremiumDialog.checkAndShow(featureId: 'donation', onUnlock: () {
+                                      Get.toNamed(RouteHelper.donationTypeList);
+                                    });
                                   },
-                                  itemName: "previous_donation".tr,
+                                  itemName: "donation".tr,
                                   itemImage: Images.Icon_Donation,
                                 ),
 
@@ -330,11 +330,11 @@ class CategoryScreen extends StatelessWidget {
                                     true)
                               GridViewItemWidget(
                                 onPressed: () {
-                                  Get.toNamed(
-                                      RouteHelper.getDonationListPageRoute(
-                                          "1"));
+                                  PremiumDialog.checkAndShow(featureId: 'donation', onUnlock: () {
+                                    Get.toNamed(RouteHelper.donationTypeList);
+                                  });
                                 },
-                                itemName: "previous_donation".tr,
+                                itemName: "donation".tr,
                                 itemImage: Images.Icon_Donation,
                               ),
 

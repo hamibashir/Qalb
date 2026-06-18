@@ -172,9 +172,25 @@ class NearbyMosqueController extends GetxController {
           '${AppConstants.NEARBY_MOSQUE_URL}/json?location=${userLocation.value}&radius=${1000 * kmToRadious}&type=mosque&key=$apiKey';
       var response = await http.get(Uri.parse(url));
       var decoded = json.decode(response.body);
-      places.value = decoded['results'];
+      
+      if (decoded['status'] == 'OK' || decoded['status'] == 'ZERO_RESULTS') {
+        places.value = decoded['results'] ?? [];
+      } else {
+        places.value = [];
+        String errorMessage = decoded['error_message'] ?? 'Failed to fetch mosques. Status: ${decoded['status']}';
+        Get.snackbar(
+          'API Error',
+          errorMessage,
+          snackPosition: SnackPosition.BOTTOM,
+          duration: const Duration(seconds: 5),
+          backgroundColor: Colors.redAccent,
+          colorText: Colors.white,
+        );
+        if (kDebugMode) {
+          print("Places API Error: $errorMessage");
+        }
+      }
     } catch (e) {
-      // rethrow;
       if (kDebugMode) {
         print("Near By Mosque api Error: $e");
       }

@@ -25,92 +25,98 @@ class SuraListWidget extends StatelessWidget {
             ? const Center(
                 child: QuranListShimmer(),
               )
-            : ListView.builder(
-                primary: false,
-                padding: const EdgeInsets.symmetric(
-                    horizontal: Dimensions.PADDING_SIZE_SMALL),
-                itemCount: quranController.suraListApiData!.data!.length,
-                itemBuilder: (context, index) {
-                  var apiData = quranController.suraListApiData!.data![index];
-                  return GestureDetector(
-                    onTap: () {
-                      Get.find<QuranController>().suraNumber = apiData.id;
-                      Get.find<QuranController>()
-                          .fetchSuraDetaileData(suraId: apiData.id.toString());
+            : RefreshIndicator(
+                onRefresh: () async {
+                  await Get.find<QuranController>().fetchSuraListData(isRefresh: true);
+                },
+                child: ListView.builder(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  primary: false,
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: Dimensions.PADDING_SIZE_SMALL),
+                  itemCount: quranController.suraListApiData!.data!.length,
+                  itemBuilder: (context, index) {
+                    var apiData = quranController.suraListApiData!.data![index];
+                    return GestureDetector(
+                      onTap: () {
+                        Get.find<QuranController>().suraNumber = apiData.id;
+                        Get.find<QuranController>()
+                            .fetchSuraDetaileData(suraId: apiData.id.toString());
 
-                      Get.toNamed(RouteHelper.suraDetaile, arguments: 0);
-                    },
-                    child: Card(
-                      clipBehavior: Clip.antiAlias,
-                      color: Theme.of(context).cardColor,
-                      shadowColor: Get.isDarkMode
-                          ? Colors.grey[800]!
-                          : Colors.grey[200]!,
-                      child: ListTile(
-                        contentPadding: const EdgeInsetsDirectional.only(
-                            start: Dimensions.PADDING_SIZE_EXTRA_SMALL,
-                            end: Dimensions.PADDING_SIZE_SMALL),
-                        leading: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            SvgPicture.asset(
-                              Images.Icon_Star,
-                              height: 50,
-                              fit: BoxFit.fill,
-                              color: Theme.of(context).primaryColor,
-                            ),
-                            Text(
-                              apiData.serialNumber.toString(),
+                        Get.toNamed(RouteHelper.suraDetaile, arguments: 0);
+                      },
+                      child: Card(
+                        clipBehavior: Clip.antiAlias,
+                        color: Theme.of(context).cardColor,
+                        shadowColor: Get.isDarkMode
+                            ? Colors.grey[800]!
+                            : Colors.grey[200]!,
+                        child: ListTile(
+                          contentPadding: const EdgeInsetsDirectional.only(
+                              start: Dimensions.PADDING_SIZE_EXTRA_SMALL,
+                              end: Dimensions.PADDING_SIZE_SMALL),
+                          leading: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              SvgPicture.asset(
+                                Images.Icon_Star,
+                                height: 50,
+                                fit: BoxFit.fill,
+                                color: Theme.of(context).primaryColor,
+                              ),
+                              Text(
+                                apiData.serialNumber.toString(),
+                                style: robotoMedium.copyWith(
+                                  fontSize: Dimensions.FONT_SIZE_SMALL,
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium!
+                                      .color,
+                                ),
+                              ),
+                            ],
+                          ),
+                          title: Obx(
+                            () => Text(
+                              apiData.translateName.toString(),
                               style: robotoMedium.copyWith(
-                                fontSize: Dimensions.FONT_SIZE_SMALL,
-                                color: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium!
-                                    .color,
+                                fontSize: Get.find<SettingsController>()
+                                    .translateFontSize
+                                    .value,
                               ),
                             ),
-                          ],
-                        ),
-                        title: Obx(
-                          () => Text(
-                            apiData.translateName.toString(),
-                            style: robotoMedium.copyWith(
-                              fontSize: Get.find<SettingsController>()
-                                  .translateFontSize
-                                  .value,
+                          ),
+                          subtitle: Obx(
+                            () => Text(
+                              "${apiData.versesTranslateName}: ${apiData.versesCount}",
+                              style: robotoMedium.copyWith(
+                                fontSize: Get.find<SettingsController>()
+                                        .translateFontSize
+                                        .value -
+                                    3,
+                                color:
+                                    Theme.of(context).textTheme.bodyLarge!.color,
+                              ),
                             ),
                           ),
-                        ),
-                        subtitle: Obx(
-                          () => Text(
-                            "${apiData.versesTranslateName}: ${apiData.versesCount}",
-                            style: robotoMedium.copyWith(
-                              fontSize: Get.find<SettingsController>()
-                                      .translateFontSize
-                                      .value -
-                                  3,
-                              color:
-                                  Theme.of(context).textTheme.bodyLarge!.color,
-                            ),
-                          ),
-                        ),
-                        trailing: Obx(
-                          () => Text(
-                            apiData.arabicName.toString(),
-                            style: GoogleFonts.getFont(
-                              Get.find<SettingsController>().selectedFont.value,
-                              fontSize: Get.find<SettingsController>()
-                                  .arabicFontSize
-                                  .value,
-                              color:
-                                  Theme.of(context).textTheme.bodyLarge!.color,
+                          trailing: Obx(
+                            () => Text(
+                              apiData.arabicName.toString(),
+                              style: GoogleFonts.getFont(
+                                Get.find<SettingsController>().selectedFont.value,
+                                fontSize: Get.find<SettingsController>()
+                                    .arabicFontSize
+                                    .value,
+                                color:
+                                    Theme.of(context).textTheme.bodyLarge!.color,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               );
       },
     );
